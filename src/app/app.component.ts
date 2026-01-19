@@ -3,13 +3,13 @@ import {RouterOutlet} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, isFormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CustomerService} from "./customerService";
 import {Customer} from "./model";
-import {NgForOf} from "@angular/common";
-import {HttpClient} from "@angular/common/http";
+import {NgForOf, NgIf} from "@angular/common";
+import {PasseComponent} from "./passe/passe.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule, NgForOf],
+  imports: [RouterOutlet, ReactiveFormsModule, NgIf, NgForOf, PasseComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css',
 })
@@ -27,7 +27,7 @@ export class AppComponent {
     this.cs.getCustomer().subscribe(value => this.customers = value);
     this.form = new FormGroup({
       email: new FormControl('', Validators.required)
-    })
+    });
   }
 
   title = 'customer';
@@ -37,6 +37,25 @@ export class AppComponent {
 
   inc() {
     this.count.update(v => v + 1);
+  }
+
+  onSubmit() {
+    if (this.form.valid) {
+      console.log(this.form);
+      console.log(this.form.pristine);
+      console.log(this.form.dirty);
+      console.log(this.form.value);
+      console.log(this.form.value.arguments);
+      console.log("**" + this.form.get("email")?.value);
+    } else {
+      console.log(this.form.pristine);
+      console.log(this.form.dirty);
+      this.form.markAsTouched();
+    }
+  }
+
+  traiterExit(val: any) {
+    console.log("la valeur recu" + val);
   }
 
 }

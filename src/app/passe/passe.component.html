@@ -1,0 +1,18 @@
+<p>passe works!</p>
+shnia jaw frere
+{{ devise() | currency }}
+
+<button (click)="send()"> SEND </button>
+
+
+<div class="gallery">
+
+  @for (item of photos; track item.id) {
+    <div class="card">
+      <h3>{{ item.title }}</h3>
+      <img [src]="item.thumbnailUrl" [alt]="item.title">
+      <p>ID: {{ item.id }}</p>
+    </div>
+  }
+
+</div>

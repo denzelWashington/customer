@@ -1,4 +1,4 @@
-{{count()}}
+{{ count() }}
 
 
 <button (click)="inc()">+</button>
@@ -6,11 +6,28 @@
 <p>Double: {{ doubleCount() }}</p>
 
 <ul>
-  <li *ngFor="let c of customers"> {{c.firstName}} {{c.lastName}}</li>
+  @for (c of customers; track c.id) {
+    <li> {{ c.firstName }} {{ c.lastName }}</li>
+  }
 </ul>
-<form [formGroup]="form">
-  <input formControlName="email" />
+<form [formGroup]="form" (ngSubmit)="onSubmit()">
+  <input formControlName="email"/>
+  @if (form.get('email')?.errors?.['required']) {
+    <small class="text-danger">
+      Email is required
+    </small>
 
+  }
+  <button type="submit" [disabled]="form.invalid"> valider</button>
 </form>
+@defer (on viewport) {
+  <app-passe [devise]="doubleCount()" (clicked)="traiterExit($event)"></app-passe>
+} @placeholder {
+  <div class="skeleton">Chargement en cours...</div>
+} @loading (after 100ms; minimum 500ms) {
+  <p>Récupération du composant lourd...</p>
+} @error {
+  <p>Erreur lors du chargement du composant.</p>
+}
 
-<router-outlet />
+<router-outlet/>
