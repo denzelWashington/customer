@@ -7,11 +7,10 @@ import {NgForOf, NgIf} from "@angular/common";
 import {PasseComponent} from "./passe/passe.component";
 
 @Component({
-  selector: 'app-root',
-  standalone: true,
-  imports: [RouterOutlet, ReactiveFormsModule, NgIf, NgForOf, PasseComponent],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+    selector: 'app-root',
+    imports: [RouterOutlet, ReactiveFormsModule, NgIf, NgForOf, PasseComponent],
+    templateUrl: './app.component.html',
+    styleUrl: './app.component.css'
 })
 export class AppComponent {
 

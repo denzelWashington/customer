@@ -4,11 +4,10 @@ import {HelloService} from "../hello.service";
 import {Photo} from "./photo.model";
 
 @Component({
-  selector: 'app-passe',
-  standalone: true,
-  imports: [CurrencyPipe],
-  templateUrl: './passe.component.html',
-  styleUrl: './passe.component.css'
+    selector: 'app-passe',
+    imports: [CurrencyPipe],
+    templateUrl: './passe.component.html',
+    styleUrl: './passe.component.css'
 })
 export class PasseComponent {
 
