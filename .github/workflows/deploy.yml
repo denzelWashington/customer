@@ -46,5 +46,12 @@ jobs:
       # Déploiement de l'image
       - name: Deploy Image
         run: |
-          # Cette commande crée l'app si elle n'existe pas, ou la met à jour
-          oc new-app ${{ secrets.REGISTRY_USER }}/customer-image:latest --name=customer-app || oc rollout restart deployment/customer-app
+          # 1. On se place explicitement dans TON projet
+               oc project wassim-sboui-dev
+
+          # 2. On crée l'application en pointant directement sur l'image Docker Hub
+          # On utilise --docker-image pour éviter qu'OpenShift cherche en local
+               oc new-app --docker-image=docker.io/${{ secrets.REGISTRY_USER }}/customer-image:latest --name=customer-app || true
+
+          # 3. On force le redémarrage pour prendre la nouvelle image
+               oc rollout restart deployment/customer-app
