@@ -1,0 +1,45 @@
+name: CI/CD OpenShift
+on:
+  push:
+    branches: [ "main" ] # Se déclenche dès que tu push sur la branche main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v4
+
+      # Connexion à Docker Hub (ou autre registry)
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.REGISTRY_USER }}
+          password: ${{ secrets.REGISTRY_PASSWORD }}
+
+      # Build et Push de l'image
+      - name: Build and Push Image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          # Remplace 'ton-pseudo' par ton vrai pseudo Docker Hub
+          tags: ${{ secrets.REGISTRY_USER }}/customer-image:latest
+
+  deploy-to-openshift:
+    needs: build-and-push # Attend que l'image soit sur le cloud pour continuer
+    runs-on: ubuntu-latest
+    steps:
+      # Connexion à ton cluster OpenShift
+      - name: Authenticate with OpenShift
+        uses: redhat-actions/oc-login@v1
+        with:
+          openshift_server: ${{ secrets.OPENSHIFT_SERVER }}
+          openshift_token: ${{ secrets.OPENSHIFT_TOKEN }}
+          insecure_skip_tls_verify: true
+
+      # Déploiement de l'image
+      - name: Deploy Image
+        run: |
+          # Cette commande crée l'app si elle n'existe pas, ou la met à jour
+          oc new-app ${{ secrets.REGISTRY_USER }}/customer-image:latest --name=customer-app || oc rollout restart deployment/customer-app

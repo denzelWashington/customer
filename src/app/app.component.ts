@@ -3,12 +3,12 @@ import {RouterOutlet} from '@angular/router';
 import {FormBuilder, FormControl, FormGroup, isFormControl, ReactiveFormsModule, Validators} from "@angular/forms";
 import {CustomerService} from "./customerService";
 import {Customer} from "./model";
-import {NgForOf, NgIf} from "@angular/common";
+
 import {PasseComponent} from "./passe/passe.component";
 
 @Component({
     selector: 'app-root',
-    imports: [RouterOutlet, ReactiveFormsModule, NgIf, NgForOf, PasseComponent],
+    imports: [RouterOutlet, ReactiveFormsModule, PasseComponent],
     templateUrl: './app.component.html',
     styleUrl: './app.component.css'
 })

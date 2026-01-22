@@ -2,12 +2,14 @@ import {Component, EventEmitter, input, Input, output, Output} from '@angular/co
 import {CurrencyPipe} from "@angular/common";
 import {HelloService} from "../hello.service";
 import {Photo} from "./photo.model";
+import {ButtonModule} from 'primeng/button'; // 1. Importe le module du bouton
 
 @Component({
-    selector: 'app-passe',
-    imports: [CurrencyPipe],
-    templateUrl: './passe.component.html',
-    styleUrl: './passe.component.css'
+  selector: 'app-passe',
+  imports: [CurrencyPipe, ButtonModule],
+  templateUrl: './passe.component.html',
+  styleUrl: './passe.component.css',
+  standalone: true,
 })
 export class PasseComponent {
 
