@@ -1,3 +1,4 @@
+# --- Étape 1 : Build ---
 FROM node:22-alpine AS build
 WORKDIR /app
 COPY package*.json ./
@@ -5,22 +6,16 @@ RUN npm install
 COPY . .
 RUN npm run build -- --configuration production
 
-FROM nginx:alpine
+# --- Étape 2 : Production avec l'image spéciale ---
+# Cette image est conçue pour OpenShift (non-root)
+FROM nginxinc/nginx-unprivileged:alpine
 
-# 1. On supprime les configs par défaut qui posent problème
-RUN rm /etc/nginx/conf.d/default.conf
-
-# 2. On copie ton site
+# Copie des fichiers buildés
+# Attention au chemin : sur cette image c'est souvent /usr/share/nginx/html
 COPY --from=build /app/dist/customer/browser /usr/share/nginx/html
 
-# 3. On copie TA config qui utilise /tmp
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# 4. On donne les droits totaux sur /tmp et le dossier web
-RUN chmod -R 777 /tmp /usr/share/nginx/html /var/cache/nginx /var/log/nginx
-
-# OpenShift utilise un utilisateur aléatoire, on lui donne l'accès
-USER 1001
+# Pas besoin de modifier les ports ou les permissions,
+# cette image est déjà réglée sur 8080 et /tmp
 
 EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
