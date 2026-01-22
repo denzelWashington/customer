@@ -30,6 +30,11 @@ jobs:
     needs: build-and-push # Attend que l'image soit sur le cloud pour continuer
     runs-on: ubuntu-latest
     steps:
+      # 1. Installer l'outil 'oc' (CLI OpenShift)
+      - name: Install OpenShift CLI
+        uses: redhat-actions/openshift-tools-installer@v1
+        with:
+         oc: "4" # Installe la version 4 du client
       # Connexion à ton cluster OpenShift
       - name: Authenticate with OpenShift
         uses: redhat-actions/oc-login@v1
