@@ -16,6 +16,7 @@ COPY --from=build /app/dist/customer/browser /usr/share/nginx/html
 
 # Pas besoin de modifier les ports ou les permissions,
 # cette image est déjà réglée sur 8080 et /tmp
+#test
 
 EXPOSE 8080
 CMD ["nginx", "-g", "daemon off;"]
